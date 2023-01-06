@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: MIT
+
+set(BQ25180_SRCS bq25180.c)
+set(BQ25180_INCS ${CMAKE_CURRENT_SOURCE_DIR})

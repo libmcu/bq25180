@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: MIT
+
+BQ25180_SRCS += $(BQ25180_ROOT)/bq25180.c
+BQ25180_INCS := $(BQ25180_ROOT)
