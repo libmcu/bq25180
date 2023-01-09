@@ -290,6 +290,13 @@ void bq25180_set_sys_source(enum bq25180_sys_source source);
  */
 void bq25180_set_sys_voltage(enum bq25180_sys_regulation val);
 
+/**
+ * @brief Enable or disable thermal protection
+ *
+ * @param[in] enable enable if true or disable if false
+ */
+void bq25180_enable_thermal_protection(bool enable);
+
 /* TODO: Implement bq25180_enable_interrupt() */
 /* TODO: Implement bq25180_disable_interrupt() */
 /* TODO: Implement bq25180_enable_button() */

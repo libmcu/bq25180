@@ -269,3 +269,8 @@ void bq25180_set_sys_voltage(enum bq25180_sys_regulation val)
 {
 	set_reg(SYS_REG, 5, 7, (uint8_t)val); /* SYS_REG_CTRL */
 }
+
+void bq25180_enable_thermal_protection(bool enable)
+{
+	set_reg(IC_CTRL, 7, 1, enable); /* TS_EN */
+}

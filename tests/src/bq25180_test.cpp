@@ -450,3 +450,13 @@ TEST(BQ25180, sys_voltage_ShouldSetSYSREGCTRL) {
 	expect_reg(0x0a/*SYS_REG*/, 0x40, 0xe0);
 	bq25180_set_sys_voltage(BQ25180_SYS_REG_PASS_THROUGH);
 }
+
+TEST(BQ25180, thermal_protection_ShouldDisable) {
+	expect_reg(0x07/*IC_CTRL*/, 0x84, 0x4);
+	bq25180_enable_thermal_protection(false);
+}
+
+TEST(BQ25180, thermal_protection_ShouldEnable) {
+	expect_reg(0x07/*IC_CTRL*/, 0x4, 0x84);
+	bq25180_enable_thermal_protection(true);
+}
