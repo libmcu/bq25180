@@ -274,3 +274,8 @@ void bq25180_enable_thermal_protection(bool enable)
 {
 	set_reg(IC_CTRL, 7, 1, enable); /* TS_EN */
 }
+
+void bq25180_enable_push_button(bool enable)
+{
+	set_reg(SHIP_RST, 0, 1, enable); /* EN_PUSH */
+}

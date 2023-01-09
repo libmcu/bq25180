@@ -460,3 +460,13 @@ TEST(BQ25180, thermal_protection_ShouldEnable) {
 	expect_reg(0x07/*IC_CTRL*/, 0x4, 0x84);
 	bq25180_enable_thermal_protection(true);
 }
+
+TEST(BQ25180, enable_push_button_ShouldDisable) {
+	expect_reg(0x09/*SHIP_RST*/, 0x11, 0x10);
+	bq25180_enable_push_button(false);
+}
+
+TEST(BQ25180, enable_push_button_ShouldEnable) {
+	expect_reg(0x09/*SHIP_RST*/, 0x10, 0x11);
+	bq25180_enable_push_button(true);
+}
