@@ -470,3 +470,39 @@ TEST(BQ25180, enable_push_button_ShouldEnable) {
 	expect_reg(0x09/*SHIP_RST*/, 0x10, 0x11);
 	bq25180_enable_push_button(true);
 }
+
+TEST(BQ25180, enable_interrupt_ShouldEnable) {
+	expect_reg(0x0C/*MASK_ID*/, 0x00, 0x80);
+	bq25180_enable_interrupt(BQ25180_INTR_THERMAL_FAULT);
+	expect_reg(0x0C/*MASK_ID*/, 0x00, 0x40);
+	bq25180_enable_interrupt(BQ25180_INTR_THERMAL_REGULATION);
+	expect_reg(0x0C/*MASK_ID*/, 0x00, 0x20);
+	bq25180_enable_interrupt(BQ25180_INTR_BATTERY_RANGE);
+	expect_reg(0x0C/*MASK_ID*/, 0x00, 0x10);
+	bq25180_enable_interrupt(BQ25180_INTR_POWER_ERROR);
+
+	expect_reg(0x06/*CHARGECTRL1*/, 0x56, 0x52);
+	bq25180_enable_interrupt(BQ25180_INTR_CHARGING_STATUS);
+	expect_reg(0x06/*CHARGECTRL1*/, 0x56, 0x54);
+	bq25180_enable_interrupt(BQ25180_INTR_CURRENT_LIMIT);
+	expect_reg(0x06/*CHARGECTRL1*/, 0x57, 0x56);
+	bq25180_enable_interrupt(BQ25180_INTR_VDPM);
+}
+
+TEST(BQ25180, disable_interrupt_ShouldDisable) {
+	expect_reg(0x0C/*MASK_ID*/, 0xf0, 0x70);
+	bq25180_disable_interrupt(BQ25180_INTR_THERMAL_FAULT);
+	expect_reg(0x0C/*MASK_ID*/, 0xf0, 0xb0);
+	bq25180_disable_interrupt(BQ25180_INTR_THERMAL_REGULATION);
+	expect_reg(0x0C/*MASK_ID*/, 0xf0, 0xd0);
+	bq25180_disable_interrupt(BQ25180_INTR_BATTERY_RANGE);
+	expect_reg(0x0C/*MASK_ID*/, 0xf0, 0xe0);
+	bq25180_disable_interrupt(BQ25180_INTR_POWER_ERROR);
+
+	expect_reg(0x06/*CHARGECTRL1*/, 0, 4);
+	bq25180_disable_interrupt(BQ25180_INTR_CHARGING_STATUS);
+	expect_reg(0x06/*CHARGECTRL1*/, 0, 2);
+	bq25180_disable_interrupt(BQ25180_INTR_CURRENT_LIMIT);
+	expect_reg(0x06/*CHARGECTRL1*/, 0, 1);
+	bq25180_disable_interrupt(BQ25180_INTR_VDPM);
+}

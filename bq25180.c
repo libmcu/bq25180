@@ -63,6 +63,25 @@ static void set_reg(uint8_t reg, uint8_t bit, uint8_t mask, uint8_t val)
 	write_reg(reg, tmp);
 }
 
+static void set_interrupts(uint8_t mask, uint8_t enable)
+{
+	if (mask & BQ25180_INTR_CHARGING_STATUS) {
+		set_reg(CHARGECTRL1, 2, 1, !enable); /* CHG_STATUS_INT_MASK */
+	} else if (mask & BQ25180_INTR_CURRENT_LIMIT) {
+		set_reg(CHARGECTRL1, 1, 1, !enable); /* ILIM_INT_MASK */
+	} else if (mask & BQ25180_INTR_VDPM) {
+		set_reg(CHARGECTRL1, 0, 1, !enable); /* VDPM_INT_MASK */
+	} else if (mask & BQ25180_INTR_THERMAL_FAULT) {
+		set_reg(MASK_ID, 7, 1, enable); /* TS_INT_MASK */
+	} else if (mask & BQ25180_INTR_THERMAL_REGULATION) {
+		set_reg(MASK_ID, 6, 1, enable); /* TREG_INT_MASK */
+	} else if (mask & BQ25180_INTR_BATTERY_RANGE) {
+		set_reg(MASK_ID, 5, 1, enable); /* BAT_INT_MASK */
+	} else if (mask & BQ25180_INTR_POWER_ERROR) {
+		set_reg(MASK_ID, 4, 1, enable); /* PG_INT_MASK */
+	}
+}
+
 void bq25180_reset(bool hardware_reset)
 {
 	if (hardware_reset) {
@@ -278,4 +297,14 @@ void bq25180_enable_thermal_protection(bool enable)
 void bq25180_enable_push_button(bool enable)
 {
 	set_reg(SHIP_RST, 0, 1, enable); /* EN_PUSH */
+}
+
+void bq25180_enable_interrupt(uint8_t mask)
+{
+	set_interrupts(mask, 1);
+}
+
+void bq25180_disable_interrupt(uint8_t mask)
+{
+	set_interrupts(mask, 0);
 }

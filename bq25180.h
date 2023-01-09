@@ -63,6 +63,25 @@ enum bq25180_vindpm {
 	BQ25180_VINDPM_DISABLE,
 };
 
+enum bq25180_intr {
+	BQ25180_INTR_CHARGING_STATUS		= 0x01,
+	BQ25180_INTR_CURRENT_LIMIT		= 0x02,
+	BQ25180_INTR_VDPM			= 0x04,
+	BQ25180_INTR_THERMAL_FAULT		= 0x08,
+	BQ25180_INTR_THERMAL_REGULATION		= 0x10,
+	BQ25180_INTR_BATTERY_RANGE		= 0x20,
+	BQ25180_INTR_POWER_ERROR		= 0x40,
+	BQ25180_INTR_ALL			= (
+		BQ25180_INTR_CHARGING_STATUS |
+		BQ25180_INTR_CURRENT_LIMIT |
+		BQ25180_INTR_VDPM |
+		BQ25180_INTR_THERMAL_FAULT |
+		BQ25180_INTR_THERMAL_REGULATION |
+		BQ25180_INTR_BATTERY_RANGE |
+		BQ25180_INTR_POWER_ERROR
+	),
+};
+
 struct bq25180_event {
 	uint8_t battery_overcurrent  : 1;
 	uint8_t battery_undervoltage : 1;
@@ -304,10 +323,20 @@ void bq25180_enable_thermal_protection(bool enable);
  */
 void bq25180_enable_push_button(bool enable);
 
-/* TODO: Implement bq25180_enable_interrupt() */
-/* TODO: Implement bq25180_disable_interrupt() */
-/* TODO: Implement bq25180_enable_button() */
-/* TODO: Implement bq25180_shipmode(void) */
+/**
+ * @brief Enable interrupts
+ *
+ * @param[in] mask combined interrupt mask @ref bq25180_intr
+ */
+void bq25180_enable_interrupt(uint8_t mask);
+
+/**
+ * @brief Disable interrupts
+ *
+ * @param[in] mask combined interrupt mask @ref bq25180_intr
+ */
+void bq25180_disable_interrupt(uint8_t mask);
+
 /* TODO: Implement bq25180_shutdown_mode(void) */
 
 #if defined(__cplusplus)
