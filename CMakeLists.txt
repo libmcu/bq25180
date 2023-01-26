@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(bq25180 LANGUAGES C CXX)
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/sources.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/sources.cmake)
 
 add_library(${PROJECT_NAME} STATIC ${BQ25180_SRCS})
 target_compile_features(${PROJECT_NAME} PRIVATE c_std_99)
