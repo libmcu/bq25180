@@ -43,12 +43,12 @@ enum registers {
 
 static bool write_reg(uint8_t reg, uint8_t val)
 {
-	return bq25180_write(BQ25180_DEVICE_ADDRESS, reg, &val, 1) == 1;
+	return bq25180_write(BQ25180_DEVICE_ADDRESS, reg, &val, 1) >= 0;
 }
 
 static bool read_reg(uint8_t reg, uint8_t *p)
 {
-	return bq25180_read(BQ25180_DEVICE_ADDRESS, reg, p, 1) == 1;
+	return bq25180_read(BQ25180_DEVICE_ADDRESS, reg, p, 1) >= 0;
 }
 
 static void set_reg(uint8_t reg, uint8_t bit, uint8_t mask, uint8_t val)
@@ -67,18 +67,24 @@ static void set_interrupts(uint8_t mask, uint8_t enable)
 {
 	if (mask & BQ25180_INTR_CHARGING_STATUS) {
 		set_reg(CHARGECTRL1, 2, 1, !enable); /* CHG_STATUS_INT_MASK */
-	} else if (mask & BQ25180_INTR_CURRENT_LIMIT) {
+	}
+	if (mask & BQ25180_INTR_CURRENT_LIMIT) {
 		set_reg(CHARGECTRL1, 1, 1, !enable); /* ILIM_INT_MASK */
-	} else if (mask & BQ25180_INTR_VDPM) {
+	}
+	if (mask & BQ25180_INTR_VDPM) {
 		set_reg(CHARGECTRL1, 0, 1, !enable); /* VDPM_INT_MASK */
-	} else if (mask & BQ25180_INTR_THERMAL_FAULT) {
-		set_reg(MASK_ID, 7, 1, enable); /* TS_INT_MASK */
-	} else if (mask & BQ25180_INTR_THERMAL_REGULATION) {
-		set_reg(MASK_ID, 6, 1, enable); /* TREG_INT_MASK */
-	} else if (mask & BQ25180_INTR_BATTERY_RANGE) {
-		set_reg(MASK_ID, 5, 1, enable); /* BAT_INT_MASK */
-	} else if (mask & BQ25180_INTR_POWER_ERROR) {
-		set_reg(MASK_ID, 4, 1, enable); /* PG_INT_MASK */
+	}
+	if (mask & BQ25180_INTR_THERMAL_FAULT) {
+		set_reg(MASK_ID, 7, 1, !enable); /* TS_INT_MASK */
+	}
+	if (mask & BQ25180_INTR_THERMAL_REGULATION) {
+		set_reg(MASK_ID, 6, 1, !enable); /* TREG_INT_MASK */
+	}
+	if (mask & BQ25180_INTR_BATTERY_RANGE) {
+		set_reg(MASK_ID, 5, 1, !enable); /* BAT_INT_MASK */
+	}
+	if (mask & BQ25180_INTR_POWER_ERROR) {
+		set_reg(MASK_ID, 4, 1, !enable); /* PG_INT_MASK */
 	}
 }
 
